@@ -19,7 +19,7 @@ nginx-agora start
 ```sh
 # Env
 cp .env.prod.example .env
-vim .env # Fill empty variables
+vim .env # Fill empty variables (This may come in handy https://bitwarden.com/password-generator/)
 
 # Mount Hetzner Storage Box using WebDAV (https://www.hetzner.com/storage/storage-box)
 mkdir data
@@ -30,7 +30,7 @@ sudo vim /etc/fstab # Append: https://<username>.your-storagebox.de <nextcloud_p
 sudo mount -a
 
 # Set up nginx-agora (https://github.com/NoelDeMartin/nginx-agora)
-nginx-agora install-proxy ./nginx/cloud.noeldemartin.com nextcloud
+nginx-agora install-proxy ./nginx/cloud.noeldemartin.com.conf nextcloud
 nginx-agora enable nextcloud
 
 # Launch it!
@@ -45,3 +45,4 @@ Here's some things I usually do after the first launch:
 - Disable most apps.
 - Configure email settings.
 - Create a personal user (instead of using `admin`).
+- Configure TOTP authentication.
