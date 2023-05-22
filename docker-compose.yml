@@ -17,7 +17,7 @@ services:
     volumes:
       - nextcloud_aio_nextcloud:/var/www/html:ro
       - nextcloud_aio_apache:/mnt/data:rw
-    restart: unless-stopped
+    restart: ${RESTART_CONTAINERS}
     networks:
       default:
         aliases:
@@ -37,7 +37,7 @@ services:
       - TZ=${TIMEZONE}
       - PGTZ=${TIMEZONE}
     stop_grace_period: 1800s
-    restart: unless-stopped
+    restart: ${RESTART_CONTAINERS}
     shm_size: 268435456
 
   nextcloud-aio-nextcloud:
@@ -80,7 +80,7 @@ services:
       - ADDITIONAL_APKS=${NEXTCLOUD_ADDITIONAL_APKS}
       - ADDITIONAL_PHP_EXTENSIONS=${NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS}
       - INSTALL_LATEST_MAJOR=${INSTALL_LATEST_MAJOR}
-    restart: unless-stopped
+    restart: ${RESTART_CONTAINERS}
 
   nextcloud-aio-redis:
     image: nextcloud/aio-redis:latest
@@ -91,7 +91,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - nextcloud_aio_redis:/data:rw
-    restart: unless-stopped
+    restart: ${RESTART_CONTAINERS}
 
 volumes:
   nextcloud_aio_apache:
