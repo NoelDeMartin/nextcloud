@@ -23,10 +23,10 @@ vim .env # Fill empty variables (This may come in handy https://bitwarden.com/pa
 
 # Mount Hetzner Storage Box using WebDAV (https://www.hetzner.com/storage/storage-box)
 mkdir data
-sudo chown root:www-data data
+sudo chown www-data:www-data data
 sudo apt-get install davfs2
 sudo vim /etc/davfs2/secrets # Append: https://<username>.your-storagebox.de <username> <password>
-sudo vim /etc/fstab # Append: https://<username>.your-storagebox.de <nextcloud_path>/data davfs rw,uid=root,gid=www-data,file_mode=0660,dir_mode=0770 0 0
+sudo vim /etc/fstab # Append: https://<username>.your-storagebox.de <nextcloud_path>/data davfs rw,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770 0 0
 sudo mount -a
 
 # Set up nginx-agora (https://github.com/NoelDeMartin/nginx-agora)
