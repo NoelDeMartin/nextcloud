@@ -8,9 +8,9 @@ Configuring a self-hosted Nextcloud server](https://noeldemartin.com/tasks/confi
 ```sh
 cp .env.dev .env
 mkdir data
-nginx-agora install-proxy ./nginx/cloud.noeldemartin.com nextcloud
+nginx-agora install-proxy ./nginx/cloud.noeldemartin.test.conf nextcloud
 nginx-agora enable nextcloud
-docker-compose up -d
+docker compose up -d
 nginx-agora start
 ```
 
@@ -34,7 +34,7 @@ nginx-agora install-proxy ./nginx/cloud.noeldemartin.com.conf nextcloud
 nginx-agora enable nextcloud
 
 # Launch it!
-docker-compose up -d
+docker compose up -d
 nginx-agora start
 ```
 
@@ -46,3 +46,17 @@ Here's some things I usually do after the first launch:
 - Configure email settings.
 - Create a personal user (instead of using `admin`).
 - Configure TOTP authentication.
+
+## Updates
+
+Running updates should be as easy as running the following commands, given that Nextcloud's AIO runs upgrades automatically on start up:
+
+```sh
+git pull
+docker compose down
+docker compose up -d
+```
+
+If you don't upgrade the server in a while, this may not work because the PHP version of new images is no longer supported. Instead of following the [manual upgrade instructions](https://github.com/nextcloud/all-in-one/blob/main/manual-upgrade.md), I've found it easier to upgrade to older Docker images instead (and repeat until you can use the latest).
+
+Finally, make sure to check out the [version upgrade guides](https://docs.nextcloud.com/server/latest/admin_manual/release_notes/index.html#critical-changes), although they can often be ignored if you're using this AIO set up.
