@@ -2,7 +2,7 @@ services:
   nextcloud-aio-apache:
     depends_on:
       - nextcloud-aio-nextcloud
-    image: nextcloud/aio-apache:20250204_102259
+    image: nextcloud/aio-apache:20260122_105751
     ports:
       - ${APACHE_IP_BINDING}:${APACHE_PORT}:${APACHE_PORT}/tcp
     environment:
@@ -22,7 +22,7 @@ services:
          - nextcloud
 
   nextcloud-aio-database:
-    image: nextcloud/aio-postgresql:20250204_102259
+    image: nextcloud/aio-postgresql:20260122_105751
     expose:
       - "5432"
     volumes:
@@ -42,7 +42,7 @@ services:
     depends_on:
       - nextcloud-aio-database
       - nextcloud-aio-redis
-    image: nextcloud/aio-nextcloud:20250204_102259
+    image: nextcloud/aio-nextcloud:20260122_105751
     expose:
       - "9000"
       - "7867"
@@ -79,7 +79,7 @@ services:
     restart: ${RESTART_CONTAINERS}
 
   nextcloud-aio-redis:
-    image: nextcloud/aio-redis:20250204_102259
+    image: nextcloud/aio-redis:20260122_105751
     expose:
       - "6379"
     environment:
