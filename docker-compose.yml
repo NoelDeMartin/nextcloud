@@ -22,7 +22,7 @@ services:
          - nextcloud
 
   nextcloud-aio-database:
-    image: ghcr.io/nextcloud-releases:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-postgresql:20260122_105751
     expose:
       - "5432"
     volumes:
@@ -42,7 +42,7 @@ services:
     depends_on:
       - nextcloud-aio-database
       - nextcloud-aio-redis
-    image: ghcr.io/nextcloud-releases:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-nextcloud:20260122_105751
     expose:
       - "9000"
       - "7867"
@@ -80,7 +80,7 @@ services:
     restart: ${RESTART_CONTAINERS}
 
   nextcloud-aio-redis:
-    image: ghcr.io/nextcloud-releases:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-redis:20260122_105751
     expose:
       - "6379"
     environment:
