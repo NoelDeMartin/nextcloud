@@ -21,12 +21,15 @@ nginx-agora start
 cp .env.prod.example .env
 vim .env # Fill empty variables (This may come in handy https://bitwarden.com/password-generator/)
 
-# Mount Hetzner Storage Box using WebDAV (https://www.hetzner.com/storage/storage-box)
+# Mount Hetzner Storage Box using SMB/CIFS (https://www.hetzner.com/storage/storage-box)
 mkdir data
 sudo chown www-data:www-data data
-sudo apt-get install davfs2
-sudo vim /etc/davfs2/secrets # Append: https://<username>.your-storagebox.de <username> <password>
-sudo vim /etc/fstab # Append: https://<username>.your-storagebox.de <nextcloud_path>/data davfs rw,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770 0 0
+sudo apt-get install cifs-utils
+sudo apt-get install linux-modules-extra-$(uname -r)
+sudo mkdir -p /etc/samba
+sudo sh -c 'echo "username=<username>\npassword=<password>" > /etc/samba/credentials'
+sudo chmod 600 /etc/samba/credentials
+sudo vim /etc/fstab # Append: //<username>.your-storagebox.de/backup/<nexcloud_hetzner_path> <nextcloud_path>/data cifs credentials=/etc/samba/credentials,rw,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770,iocharset=utf8,vers=3.0,mfsymlinks,_netdev 0 0
 sudo mount -a
 
 # Set up nginx-agora (https://github.com/NoelDeMartin/nginx-agora)
