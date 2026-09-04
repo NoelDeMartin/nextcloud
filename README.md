@@ -29,7 +29,9 @@ sudo apt-get install linux-modules-extra-$(uname -r)
 sudo mkdir -p /etc/samba
 sudo sh -c 'echo "username=<username>\npassword=<password>" > /etc/samba/credentials'
 sudo chmod 600 /etc/samba/credentials
-sudo vim /etc/fstab # Append: //<username>.your-storagebox.de/backup/<nexcloud_hetzner_path> <nextcloud_path>/data cifs credentials=/etc/samba/credentials,rw,seal,hard,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770,iocharset=utf8,vers=3.1.1,mfsymlinks,_netdev 0 0
+sudo vim /etc/fstab
+# Append: //<username>.your-storagebox.de/backup/<nexcloud_hetzner_path> <nextcloud_path>/data cifs credentials=/etc/samba/credentials,rw,seal,hard,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770,iocharset=utf8,vers=3.1.1,mfsymlinks,_netdev 0 0
+sudo systemctl daemon-reload
 sudo mount -a
 
 # Set up nginx-agora (https://github.com/NoelDeMartin/nginx-agora)
