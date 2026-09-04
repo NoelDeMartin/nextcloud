@@ -29,7 +29,7 @@ sudo apt-get install linux-modules-extra-$(uname -r)
 sudo mkdir -p /etc/samba
 sudo sh -c 'echo "username=<username>\npassword=<password>" > /etc/samba/credentials'
 sudo chmod 600 /etc/samba/credentials
-sudo vim /etc/fstab # Append: //<username>.your-storagebox.de/backup/<nexcloud_hetzner_path> <nextcloud_path>/data cifs credentials=/etc/samba/credentials,rw,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770,iocharset=utf8,vers=3.0,mfsymlinks,_netdev 0 0
+sudo vim /etc/fstab # Append: //<username>.your-storagebox.de/backup/<nexcloud_hetzner_path> <nextcloud_path>/data cifs credentials=/etc/samba/credentials,rw,seal,hard,uid=www-data,gid=www-data,file_mode=0660,dir_mode=0770,iocharset=utf8,vers=3.1.1,mfsymlinks,_netdev 0 0
 sudo mount -a
 
 # Set up nginx-agora (https://github.com/NoelDeMartin/nginx-agora)
@@ -39,6 +39,22 @@ nginx-agora enable nextcloud
 # Launch it!
 docker compose up -d
 nginx-agora start
+```
+
+Finally, configure backups with [rireki](https://github.com/NoelDeMartin/rireki) using the following config in `~/.rireki/projects/nextcloud.conf`:
+
+```toml
+name = "nextcloud"
+
+[driver]
+name = "custom"
+frequency = 10080
+timeout = 600
+command = "<nextcloud_path>/scripts/backup.sh"
+
+[store]
+name = "local"
+path = "/var/www/Backups/nextcloud"
 ```
 
 ## First launch
@@ -52,9 +68,10 @@ Here's some things I usually do after the first launch:
 
 ## Updates
 
-Running updates should be as easy as running the following commands, given that Nextcloud's AIO runs upgrades automatically on start up:
+Running updates should be as easy as running the following commands, given that Nextcloud's AIO runs upgrades automatically on start up (make sure to create a backup before proceeding!):
 
 ```sh
+rireki backup nextcloud --force
 git pull
 docker compose down
 docker compose up -d

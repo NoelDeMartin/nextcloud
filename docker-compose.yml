@@ -4,7 +4,7 @@ services:
       - nextcloud-aio-nextcloud
     image: ghcr.io/nextcloud-releases/aio-apache:20260825_084538
     ports:
-      - ${APACHE_IP_BINDING}:${APACHE_PORT}:${APACHE_PORT}/tcp
+      - ${APACHE_IP_BINDING:-127.0.0.1}:${APACHE_PORT}:${APACHE_PORT}/tcp
     environment:
       - NC_DOMAIN=${NC_DOMAIN}
       - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
@@ -19,9 +19,10 @@ services:
       - nextcloud_aio_apache:/mnt/data:rw
     restart: ${RESTART_CONTAINERS}
     networks:
-      default:
+      nginx-agora:
         aliases:
-         - nextcloud
+          - nextcloud
+      internal:
 
   nextcloud-aio-database:
     image: ghcr.io/nextcloud-releases/aio-postgresql:20260825_084538
@@ -40,6 +41,8 @@ services:
     stop_grace_period: 1800s
     restart: ${RESTART_CONTAINERS}
     shm_size: 268435456
+    networks:
+      - internal
 
   nextcloud-aio-nextcloud:
     depends_on:
@@ -52,7 +55,8 @@ services:
     volumes:
       - nextcloud_aio_nextcloud:/var/www/html:rw
       - ${NEXTCLOUD_DATADIR}:/mnt/ncdata:rw
-      - ${NEXTCLOUD_MOUNT}:${NEXTCLOUD_MOUNT}:rw
+      # Uncomment if using Nextcloud's External Storage app (avoid mounting entire /mnt/)
+      # - ${NEXTCLOUD_MOUNT}:${NEXTCLOUD_MOUNT}:rw
     environment:
       - AIO_LOG_LEVEL=${AIO_LOG_LEVEL:-warn}
       - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
@@ -75,7 +79,7 @@ services:
       - TURN_SECRET=${TURN_SECRET}
       - SIGNALING_SECRET=${SIGNALING_SECRET}
       - AIO_URL=${AIO_URL}
-      - NEXTCLOUD_MOUNT=${NEXTCLOUD_MOUNT}
+      # - NEXTCLOUD_MOUNT=${NEXTCLOUD_MOUNT}
       - TZ=${TIMEZONE}
       - PHP_UPLOAD_LIMIT=${NEXTCLOUD_UPLOAD_LIMIT}
       - PHP_MEMORY_LIMIT=${NEXTCLOUD_MEMORY_LIMIT}
@@ -85,6 +89,8 @@ services:
       - ADDITIONAL_PHP_EXTENSIONS=${NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS}
       - INSTALL_LATEST_MAJOR=${INSTALL_LATEST_MAJOR}
     restart: ${RESTART_CONTAINERS}
+    networks:
+      - internal
 
   nextcloud-aio-redis:
     image: ghcr.io/nextcloud-releases/aio-redis:20260825_084538
@@ -97,6 +103,8 @@ services:
     volumes:
       - nextcloud_aio_redis:/data:rw
     restart: ${RESTART_CONTAINERS}
+    networks:
+      - internal
 
 volumes:
   nextcloud_aio_apache:
@@ -111,6 +119,7 @@ volumes:
     name: nextcloud_aio_redis
 
 networks:
-  default:
+  nginx-agora:
     name: nginx-agora
     external: true
+  internal:
