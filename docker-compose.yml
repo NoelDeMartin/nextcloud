@@ -2,7 +2,7 @@ services:
   nextcloud-aio-apache:
     depends_on:
       - nextcloud-aio-nextcloud
-    image: ghcr.io/nextcloud-releases/aio-apache:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-apache:20260817_082005
     ports:
       - ${APACHE_IP_BINDING}:${APACHE_PORT}:${APACHE_PORT}/tcp
     environment:
@@ -23,7 +23,7 @@ services:
          - nextcloud
 
   nextcloud-aio-database:
-    image: ghcr.io/nextcloud-releases/aio-postgresql:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-postgresql:20260817_082005
     expose:
       - "5432"
     volumes:
@@ -43,7 +43,7 @@ services:
     depends_on:
       - nextcloud-aio-database
       - nextcloud-aio-redis
-    image: ghcr.io/nextcloud-releases/aio-nextcloud:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-nextcloud:20260817_082005
     expose:
       - "9000"
       - "7867"
@@ -84,7 +84,7 @@ services:
     restart: ${RESTART_CONTAINERS}
 
   nextcloud-aio-redis:
-    image: ghcr.io/nextcloud-releases/aio-redis:20260122_105751
+    image: ghcr.io/nextcloud-releases/aio-redis:20260817_082005
     expose:
       - "6379"
     environment:
