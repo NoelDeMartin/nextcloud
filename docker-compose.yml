@@ -3,8 +3,6 @@ services:
     depends_on:
       - nextcloud-aio-nextcloud
     image: ghcr.io/nextcloud-releases/aio-apache:20260825_084538
-    ports:
-      - ${APACHE_IP_BINDING:-127.0.0.1}:${APACHE_PORT}:${APACHE_PORT}/tcp
     environment:
       - NC_DOMAIN=${NC_DOMAIN}
       - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
@@ -120,6 +118,6 @@ volumes:
 
 networks:
   nginx-agora:
-    name: nginx-agora
+    name: nginx-agora-nextcloud
     external: true
   internal:
