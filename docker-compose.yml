@@ -3,6 +3,8 @@ services:
     depends_on:
       - nextcloud-aio-nextcloud
     image: ghcr.io/nextcloud-releases/aio-apache:20260825_084538
+    security_opt:
+      - no-new-privileges:true
     environment:
       - NC_DOMAIN=${NC_DOMAIN}
       - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
@@ -24,6 +26,8 @@ services:
 
   nextcloud-aio-database:
     image: ghcr.io/nextcloud-releases/aio-postgresql:20260825_084538
+    security_opt:
+      - no-new-privileges:true
     expose:
       - "5432"
     volumes:
@@ -47,6 +51,8 @@ services:
       - nextcloud-aio-database
       - nextcloud-aio-redis
     image: ghcr.io/nextcloud-releases/aio-nextcloud:20260825_084538
+    security_opt:
+      - no-new-privileges:true
     expose:
       - "9000"
       - "7867"
@@ -92,6 +98,8 @@ services:
 
   nextcloud-aio-redis:
     image: ghcr.io/nextcloud-releases/aio-redis:20260825_084538
+    security_opt:
+      - no-new-privileges:true
     expose:
       - "6379"
     environment:
