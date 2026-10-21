@@ -2,7 +2,7 @@ services:
   nextcloud-aio-apache:
     depends_on:
       - nextcloud-aio-nextcloud
-    image: ghcr.io/nextcloud-releases/aio-apache:20260825_084538
+    image: ghcr.io/nextcloud-releases/aio-apache:20261021_180331
     security_opt:
       - no-new-privileges:true
     environment:
@@ -25,7 +25,7 @@ services:
       internal:
 
   nextcloud-aio-database:
-    image: ghcr.io/nextcloud-releases/aio-postgresql:20260825_084538
+    image: ghcr.io/nextcloud-releases/aio-postgresql:20261021_180331
     security_opt:
       - no-new-privileges:true
     expose:
@@ -50,7 +50,7 @@ services:
     depends_on:
       - nextcloud-aio-database
       - nextcloud-aio-redis
-    image: ghcr.io/nextcloud-releases/aio-nextcloud:20260825_084538
+    image: ghcr.io/nextcloud-releases/aio-nextcloud:20261021_180331
     security_opt:
       - no-new-privileges:true
     expose:
@@ -97,7 +97,7 @@ services:
       - internal
 
   nextcloud-aio-redis:
-    image: ghcr.io/nextcloud-releases/aio-redis:20260825_084538
+    image: ghcr.io/nextcloud-releases/aio-redis:20261021_180331
     security_opt:
       - no-new-privileges:true
     expose:
